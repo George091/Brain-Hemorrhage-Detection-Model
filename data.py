@@ -3,7 +3,7 @@
 """
 Created on Mon Nov 18 14:05:00 2019
 
-@author: georgebarker
+@author: georgebarker, juliolopez, andrezeromski
 """
 
 import os
@@ -44,8 +44,8 @@ for filename in imageList:
         ds = pydicom.dcmread(path+filename)
         transformedImageList.append(ds)
     i += 1
-    
-    
+
+
 width = 5
 height = 2
 fig, axs = plt.subplots(height, width, figsize=(15,5))
@@ -61,6 +61,3 @@ for widthPosition in range(0,width):
     title = 'After Processing'
     axs[1,widthPosition].set_title(title)
 plt.show()
-
-    
-
