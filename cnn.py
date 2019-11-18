@@ -14,7 +14,7 @@ import pydicom
 import os
 
 TRAIN_IMG_PATH = "../input/rsna-intracranial-hemorrhage-detection/stage_1_train_images/"
-TEST_IMG_PATH = "../input/rsna-intracranial-hemorrhage-detection/stage_1_test_images/"
+TEST_IMG_PATH = "Test-Images"
 BASE_PATH = '/kaggle/input/rsna-intracranial-hemorrhage-detection/'
 TRAIN_DIR = 'stage_1_train_images/'
 
