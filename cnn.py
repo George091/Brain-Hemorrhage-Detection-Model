@@ -10,17 +10,23 @@ import os
 import pydicom
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+import keras
 
 def loadTrainData():
-    path = os.getcwd() + "/Test-Images/"
+    path = os.getcwd() + "/Train-Images/"
     fileList = os.listdir(path)
+    
+    path2 = ########
     
     x_train = []
     y_train = []
     for file in fileList:    
         #read in and convert DICOM file
-        
+        ds = pydicom.dcmread(path+file)
+        x_train.append(composite_image(ds))
         #read CSV for y_train
+        pd.read_csv(########)
         
     return (x_train, y_train)
 
@@ -53,3 +59,6 @@ for filename in imageList:
     transformedImageList.append(composite_image(ds))
 
 (x_train, y_train) = loadTrainData()
+
+modol = keras.models.Sequential()
+model.add()
