@@ -117,11 +117,11 @@ class DataGenerator(keras.utils.Sequence):
             # Store class
             y[i] = self.labels[ID]
 
-        return X, y#keras.utils.to_categorical(y, num_classes=self.n_classes)
+        return (X, y) #keras.utils.to_categorical(y, num_classes=self.n_classes)
 
 def main():    
     # Datasets
-    (partition,labels) = create_partition_and_labels(data_location) # IDs, Labels
+#    (partition,labels) = create_partition_and_labels(data_location) # IDs, Labels
     
 #    pickle_out = open("partitionAndLabelInput","wb")
 #    pickle.dump((partition,labels), pickle_out)
