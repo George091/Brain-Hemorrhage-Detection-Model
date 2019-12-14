@@ -3,7 +3,7 @@
 """
 Created on Mon Nov 18 09:12:16 2019
 
-@author: georgebarker, andrezeromski, juliolopez
+@author: georgebarker, andrezeromski, juliolopez, zachfrancis
 """
 
 import os
@@ -103,36 +103,33 @@ class DataGenerator(keras.utils.Sequence):
 # Loading labels
 pickle_in = open("data/dataLabels","rb")
 (partition,labels) = pickle.load(pickle_in)
-   
 print("Partition and labels loaded.")
 
-batch_size=1
+batch_size=8
 
 # Generators
 training_generator = DataGenerator(partition['train'], labels, batch_size)
 validation_generator = DataGenerator(partition['validation'], labels, batch_size)
-
 print("Training and validation generators created.")
 
-# Model reconstruction from JSON file
+# Load and compile new model
 with open('model/model_architecture.json', 'r') as f:
     model = model_from_json(f.read())
-
-# Load weights into the new model
 model.load_weights('model/model_weights.h5')
-
-model.compile(loss="categorical_crossentropy", optimizer=keras.optimizers.Adam(), metrics=['accuracy',tf.keras.metrics.TruePositives(),tf.keras.metrics.TrueNegatives(),tf.keras.metrics.AUC()])
-
-print("Training model on sample training set:")
-
-# Train model on dataset
-model.fit_generator(training_generator, epochs = 1, verbose = 1)
-
-print("Training model on sample testing set:")
+model.compile(loss="categorical_crossentropy", optimizer=keras.optimizers.Adam(), metrics=['accuracy',tf.keras.metrics.TruePositives(),tf.keras.metrics.TrueNegatives(),tf.keras.metrics.FalsePositives(),tf.keras.metrics.FalseNegatives(),tf.keras.metrics.AUC()])
 
 # Evaluating model
+print("\nEvaluating model on testing set before training:")
 prediction = model.evaluate_generator(generator = validation_generator, verbose = 1)
+for metric, score in zip(model.metrics_names, prediction):
+    print(str(metric)+": "+str(score))
 
-print("Model Evaluation: ")
+# Train model on dataset
+print("\nTraining model on sample training set:")
+model.fit_generator(training_generator, epochs = 10, verbose = 2)
+
+# Evaluating model
+print("\nEvaluating model on sample testing set:")
+prediction = model.evaluate_generator(generator = validation_generator, verbose = 1)
 for metric, score in zip(model.metrics_names, prediction):
     print(str(metric)+": "+str(score))
