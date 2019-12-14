@@ -15,6 +15,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D
 import pickle
 from keras.models import model_from_json
+import tensorflow as tf
 
 def create_partition_and_labels(data_location):
     # Constants
@@ -93,19 +94,19 @@ class DataGenerator(keras.utils.Sequence):
         batch_y = []
         for item in batch_x:
             batch_y.append(self.labels[item])
-        x, y = np.array([composite_image(pydicom.dcmread(data_location+'/stage_2_train/' + ID + '.dcm')) for ID in batch_x]), np.array(batch_y)
+        x, y = np.array([composite_image(pydicom.dcmread('data/' + ID + '.dcm')) for ID in batch_x]), np.array(batch_y)
         return x, y
-
-# Loading labels
-pickle_in = open("dataLabels.dms","rb")
-model = pickle.load(pickle_in)
 
 # Datasets
 # (partition,labels) = create_partition_and_labels(data_location) # IDs, Labels
+
+# Loading labels
+pickle_in = open("data/dataLabels","rb")
+(partition,labels) = pickle.load(pickle_in)
    
 print("Partition and labels loaded.")
 
-batch_size=8
+batch_size=1
 
 # Generators
 training_generator = DataGenerator(partition['train'], labels, batch_size)
@@ -120,8 +121,14 @@ with open('model/model_architecture.json', 'r') as f:
 # Load weights into the new model
 model.load_weights('model/model_weights.h5')
 
+model.compile(loss="categorical_crossentropy", optimizer=keras.optimizers.Adam(), metrics=['accuracy',tf.keras.metrics.TruePositives(),tf.keras.metrics.TrueNegatives(),tf.keras.metrics.AUC()])
+
+print("Training model on sample training set:")
+
 # Train model on dataset
 model.fit_generator(training_generator, epochs = 1, verbose = 1)
+
+print("Training model on sample testing set:")
 
 # Evaluating model
 prediction = model.evaluate_generator(generator = validation_generator, verbose = 1)
