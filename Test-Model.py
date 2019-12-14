@@ -96,11 +96,12 @@ class DataGenerator(keras.utils.Sequence):
         x, y = np.array([composite_image(pydicom.dcmread(data_location+'/stage_2_train/' + ID + '.dcm')) for ID in batch_x]), np.array(batch_y)
         return x, y
 
-## GLOBAL CONSTANTS
-data_location = '/kaggle/input/rsna-intracranial-hemorrhage-detection/rsna-intracranial-hemorrhage-detection'
+# Loading labels
+pickle_in = open("dataLabels.dms","rb")
+model = pickle.load(pickle_in)
 
 # Datasets
-(partition,labels) = create_partition_and_labels(data_location) # IDs, Labels
+# (partition,labels) = create_partition_and_labels(data_location) # IDs, Labels
    
 print("Partition and labels loaded.")
 
@@ -124,6 +125,7 @@ model.fit_generator(training_generator, epochs = 1, verbose = 1)
 
 # Evaluating model
 prediction = model.evaluate_generator(generator = validation_generator, verbose = 1)
+
 print("Model Evaluation: ")
 for metric, score in zip(model.metrics_names, prediction):
     print(str(metric)+": "+str(score))
