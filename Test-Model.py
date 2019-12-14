@@ -3,19 +3,24 @@
 """
 Created on Mon Nov 18 09:12:16 2019
 
+This python file is used only for testing puproses to show the following:
+1) Our model successfully uses a data generator to load in x and y training data to the fit_generator function
+2) Our model successfully uses a data generator to load in x and y validation data to the evaluate_generator function
+3) An example of our model's predictions on a positive case (brain hemorrhaging)
+4) An example of our model's predictions on a negative cases (no brain hemorrhaging)
+
 @author: georgebarker, andrezeromski, juliolopez, zachfrancis
 """
 
 import os
-import numpy as np
-import pandas as pd
+import pickle
 import keras
 import pydicom
-from keras.models import Sequential
-from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D
-import pickle
-from keras.models import model_from_json
+import numpy as np
+import pandas as pd
 import tensorflow as tf
+from keras.models import Sequential, model_from_json
+from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D
 
 def create_partition_and_labels(data_location):
     # Constants
@@ -116,20 +121,47 @@ print("Training and validation generators created.")
 with open('model/model_architecture.json', 'r') as f:
     model = model_from_json(f.read())
 model.load_weights('model/model_weights.h5')
-model.compile(loss="categorical_crossentropy", optimizer=keras.optimizers.Adam(), metrics=['accuracy',tf.keras.metrics.TruePositives(),tf.keras.metrics.TrueNegatives(),tf.keras.metrics.FalsePositives(),tf.keras.metrics.FalseNegatives(),tf.keras.metrics.AUC()])
+model.compile(loss="binary_crossentropy", optimizer=keras.optimizers.Adam(), metrics=['accuracy',tf.keras.metrics.TruePositives(),tf.keras.metrics.TrueNegatives(),tf.keras.metrics.FalsePositives(),tf.keras.metrics.FalseNegatives(),tf.keras.metrics.AUC()])
 
-# Evaluating model
-print("\nEvaluating model on testing set before training:")
-prediction = model.evaluate_generator(generator = validation_generator, verbose = 1)
-for metric, score in zip(model.metrics_names, prediction):
-    print(str(metric)+": "+str(score))
-
-# Train model on dataset
+# Training model on sample training set
 print("\nTraining model on sample training set:")
-model.fit_generator(training_generator, epochs = 10, verbose = 2)
+model.fit_generator(training_generator, epochs = 20, verbose = 2)
 
-# Evaluating model
+# Evaluating model on sample validation set
 print("\nEvaluating model on sample testing set:")
 prediction = model.evaluate_generator(generator = validation_generator, verbose = 1)
 for metric, score in zip(model.metrics_names, prediction):
     print(str(metric)+": "+str(score))
+
+# Prints out positive cases of bleeding
+positive_batch_x = []
+positive_batch_y = []
+
+for ID in partition['validation']:
+    if labels[ID][0] == 1:
+        positive_batch_x.append(ID)
+        positive_batch_y.append(labels[ID])
+
+prediction = model.predict(np.array([composite_image(pydicom.dcmread('data/' + ID + '.dcm')) for ID in positive_batch_x]))
+np.set_printoptions(formatter={'float': lambda x: "{0:0.2f}".format(x)})
+
+for y_actual, y_predict in zip(positive_batch_y,prediction):
+    print("For y_actual: "+str(y_actual)+', our model made y_predict: '+str(y_predict))
+
+# Prints out negative cases of bleeding
+positive_batch_x = []
+positive_batch_y = []
+
+for ID in partition['validation']:
+    if labels[ID][0] == 0:
+        positive_batch_x.append(ID)
+        positive_batch_y.append(labels[ID])
+
+prediction = model.predict(np.array([composite_image(pydicom.dcmread('data/' + ID + '.dcm')) for ID in positive_batch_x]))
+np.set_printoptions(formatter={'float': lambda x: "{0:0.2f}".format(x)})
+
+for y_actual, y_predict in zip(positive_batch_y,prediction):
+    print("For y_actual: "+str(y_actual)+', our model made y_predict: '+str(y_predict))
+
+
+
