@@ -1,5 +1,23 @@
 # Brain Hemorrhage Detection Model
 
+- [How to Run Code](##How-to-Run-Code)
+- [Imports](##Imports)
+- [window_image Function](##window_image-Function)
+- [composite_image Function](##composite_image-Function)
+- [create_partition_and_labels Function](##create_partition_and_labels-Function)
+- [DataGenerator Class](##DataGenerator-Class)
+- [Code Flow](##Code-Flow)
+- [Basic Vanilla CNN](##Basic-Vanilla-CNN)
+- [AlexNet](##AlexNet)
+- [Inception V3](##Inception-V3)
+- [DenseNet](##DenseNet)
+- [ResNet](##ResNet)
+- [Loading and Saving](##Loading-and-Saving)
+- [Evaluation](##Evaluation)
+- [Trouble-shooting](##Trouble-shooting)
+  * [Corrupted data: On the hard drive and from Kaggle](###Corrupted data:-On-the-hard-drive-and-from-Kaggle)
+  * [Loss Function: Categorical vs binary cross entropy](###Loss-Function:-Categorical-vs-binary-cross-entropy)
+
 ## How to Run Code
 Download all files and data from the provided github link: https://github.com/George091/Brain-Hemorrhage-Detection-Model. Run the “Test-Model.py” file after downloading the entire repository. This python file shows the following in the console: (1) an example of our model’s predictions on a positive case (brain hemorrhaging) (2) an example of our model’s predictions on a negative case (no brain hemorrhaging) (3) our model uses the data generator to train a model using fit_generator on a subset of the whole dataset (4) our model uses the data generator to evaluate a model using evaluate_generator on a subset of the whole dataset. It is important to note, that this model pickles in the partition and labels dictionary described in the section on create_partition_and_labels function. The excel file containing the labels was over 100 MB and too large for github to contain, so we serialized the dictionaries for a subset of the data. 
 
