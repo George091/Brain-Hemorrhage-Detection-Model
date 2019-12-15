@@ -2,6 +2,7 @@
 
 This project uses a deep learning model to detect brain hemorrhaging within DICOM medical images. This project was completed by George Barker, Zach Francis, Julio Lopez, and Andre Zeromski.
 
+## Table of Contents
 - [How to Run Code](#How-to-Run-Code)
 - [Imports](#Imports)
 - [window_image Function](#window_image-Function)
