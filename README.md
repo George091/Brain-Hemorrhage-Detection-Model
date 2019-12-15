@@ -2,6 +2,7 @@
 ##How to Run Our Code
 Download all files and data from the provided github link: https://github.com/George091/Brain-Hemorrhage-Detection-Model. Run the “Test-Model.py” file after downloading the entire repository. This python file shows the following in the console: (1) an example of our model’s predictions on a positive case (brain hemorrhaging) (2) an example of our model’s predictions on a negative case (no brain hemorrhaging) (3) our model uses the data generator to train a model using fit_generator on a subset of the whole dataset (4) our model uses the data generator to evaluate a model using evaluate_generator on a subset of the whole dataset. It is important to note, that this model pickles in the partition and labels dictionary described in the section on create_partition_and_labels function. The excel file containing the labels was over 100 MB and too large for github to contain, so we serialized the dictionaries for a subset of the data. 
 
+
 We also included a file Inception-Model.py that will not run as is, but is available to see the logic of our overall framework on how we train, evaluate, and save a model. This includes cleaning data and feeding data to the model. We describe this script in the below README. Inception-Model.py can be run in a Kaggle kernel on kaggle.com after importing the RSNA dataset into the input of a kernel.
 
 ##Imports
