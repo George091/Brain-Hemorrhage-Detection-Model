@@ -1,6 +1,6 @@
 # Brain Hemorrhage Detection Model
 
-- [How to Run Code](##How-to-Run-Code)
+- [How to Run Code](#How-to-Run-Code)
 - [Imports](##Imports)
 - [window_image Function](##window_image-Function)
 - [composite_image Function](##composite_image-Function)
