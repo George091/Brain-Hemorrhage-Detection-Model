@@ -138,7 +138,7 @@ for ID in partition['validation']:
 
 prediction = model.predict(np.array([composite_image(pydicom.dcmread('data/' + ID + '.dcm')) for ID in positive_batch_x]))
 np.set_printoptions(formatter={'float': lambda x: "{0:0.2f}".format(x)})
-print("\nTesting predictions on positive cases of brain hemorrhaging (press enter to continue):")
+print("\nTesting predictions on positive cases of brain hemorrhaging:")
 for y_actual, y_predict in zip(positive_batch_y,prediction):
     print("For y_actual: "+str(y_actual)+', our model made y_predict: '+str(y_predict))
 
@@ -156,7 +156,7 @@ for ID in partition['validation']:
 
 prediction = model.predict(np.array([composite_image(pydicom.dcmread('data/' + ID + '.dcm')) for ID in positive_batch_x]))
 np.set_printoptions(formatter={'float': lambda x: "{0:0.2f}".format(x)})
-print("\nTesting predictions on negative cases of brain hemorrhaging (press enter to continue):")
+print("\nTesting predictions on negative cases of brain hemorrhaging:")
 for y_actual, y_predict in zip(positive_batch_y,prediction):
     print("For y_actual: "+str(y_actual)+', our model made y_predict: '+str(y_predict))
 
